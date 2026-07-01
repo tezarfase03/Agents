@@ -4,25 +4,25 @@ My first project exploring **AI agents** with LangChain. I'm still learning how 
 
 ## What I built
 
-A **lyrics moderation assistant** that:
-
-1. Takes a YouTube video URL
-2. Fetches the lyrics from the video transcript
-3. Uses an AI agent to decide when to call tools
-4. Cleans up bad language before returning the result
+1. **Lyrics Moderation Assistant** — An agent that takes a YouTube video URL, fetches lyrics from the video transcript using document loaders, and cleans up bad language using custom moderation tools.
+2. **Stateful Agent & Chatbot** — Conversational implementations in the [stateful_agent](file:///c:/Users/kesha/OneDrive/Desktop/agents_langchain/Agents/stateful_agent) directory that demonstrate how to manage and persist chat history using LangChain/LangGraph checkpointers.
 
 ### Files
 
-- **`langchain_helper.py`** — The main agent setup using Google Gemini and LangChain tools.
+- **`langchain_helper.py`** — The main lyrics moderation assistant agent setup.
+- **`stateful_agent/`** — Subdirectory containing the stateful agents. See [stateful_agent/README.md](file:///c:/Users/kesha/OneDrive/Desktop/agents_langchain/Agents/stateful_agent/README.md) for details.
 
-### Tools the agent can use
+### Tools the Lyrics Assistant can use
 
 - **`lyrics_fetcher`** — Loads lyrics from a YouTube video and removes extra formatting.
 - **`Moderator`** — Detects and masks profanity in the lyrics.
 
 ## How it works
 
-The agent is built with `create_agent` from LangChain. It uses **Gemini 2.5 Flash** as the model and gets a system prompt telling it to fetch lyrics and moderate them. When you give it a YouTube link, the agent picks the right tools and returns cleaned lyrics.
+- **Lyrics Moderation Assistant**: The agent is built with `create_agent` from LangChain. It uses **Gemini 2.5 Flash** as the model and gets a system prompt telling it to fetch lyrics and moderate them. When you give it a YouTube link, the agent picks the right tools and returns cleaned lyrics.
+- **Stateful Agent**: Uses `InMemorySaver` memory checkpointing inside `create_agent` to track messages tied to a specific `thread_id` across invocations.
+- **Stateful Chatbot**: Uses `RunnableWithMessageHistory` and `InMemoryChatMessageHistory` to build an interactive console chat program that remembers conversation history.
+
 
 ## Setup
 
