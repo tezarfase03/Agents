@@ -1,32 +1,73 @@
-from langchain.agents import create_agent
-from langchain_core.utils.uuid import uuid7
-from langgraph.checkpoint.memory import InMemorySaver
+from langchain_core.messages import HumanMessage
+from langchain_core.chat_history import InMemoryChatMessageHistory
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.prompts import MessagesPlaceholder
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_core.runnables.history import RunnableWithMessageHistory
+from langchain_core.output_parsers import StrOutputParser
 from dotenv import load_dotenv
+import asyncio
 load_dotenv()
-agent = create_agent(
-    model="google_genai:gemini-3.5-flash",
-    tools =[],
-    checkpointer = InMemorySaver()
+
+llm = ChatGoogleGenerativeAI(model="gemini-3.5-flash",temperature=0.7)
+
+prompt = ChatPromptTemplate.from_messages([
+    ("system","you are a helpful assistant. Anser questions conciesly."),
+    MessagesPlaceholder(variable_name="history"),
+    ("human","{input}"),
+])
+
+chain = prompt | llm | StrOutputParser()
+
+store = {}
+
+def get_session_history(session_id:str):
+    if session_id not in store:
+        store[session_id]= InMemoryChatMessageHistory()
+    return store[session_id]
+
+
+chatbot = RunnableWithMessageHistory(
+    chain,
+    get_session_history,
+    input_messages_key="input",
+    history_messages_key="history",
+
 )
-id=str(uuid7())
-config = {"configurable":{"thread_id":id}}
-result = agent.invoke(
-    {"messages": [{"role": "user", "content": "What's the weather in assam?"}]},
-    config=config,
-)
 
-print(result["messages"][-1].content)
+config = {"configurable": {"session_id": "chat-1"}}
+print(config['configurable'])
+print("chat ready! Type 'quite' to exit.\n")
+async def main():
+
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() in ("quit","exit","q"):
+            print("Goodbye!")
+            break
+        elif user_input.lower() in ("history"):
+            session_id=config['configurable']['session_id']
+            if session_id in store:
+                for msg in store[session_id].messages:
+                    role = "You" if msg.type =="human" else "Bot"
+                    print(f" {role}: {msg.content}" )
+                    
+            else:
+                print(" NO History Yet!")
+                
+            print()
+            continue 
+        
+        else :
+            async for event in chatbot.astream_events(
+                {"input":user_input},
+                config=config,
+                version="v2"
+            ):
+                if event["event"] == "on_parser_stream":
+                    chunk = event["data"]["chunk"]
+                    print(chunk, end="", flush=True)
 
 
-def state_checker() -> str:
 
-    # Use the same config/thread_id you used for your invocations
-    config = {"configurable": {"thread_id":id }}
-
-    # Retrieve the current state snapshot
-    snapshot = agent.get_state(config)
-
-    # Print the messages stored in the state
-    print(snapshot.values.get("messages"))
-
-state_checker()
+asyncio.run(main())
