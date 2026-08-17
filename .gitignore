@@ -1,0 +1,92 @@
+# ==============================================================
+#  Personal Voice Chatbot — .gitignore
+# ==============================================================
+
+# ── Python Bytecode & Cache ──────────────────────────────────
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ── Virtual Environments ─────────────────────────────────────
+.venv/
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+
+# ── Environment & Secrets ────────────────────────────────────
+.env
+.env.*
+.env.local
+.env.*.local
+!.env.example
+*.pem
+*.key
+
+# ── IDEs & Editors ───────────────────────────────────────────
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+*.sublime-project
+*.sublime-workspace
+
+# ── Operating System Artifacts ────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+ehthumbs.db
+$RECYCLE.BIN/
+
+# ── Logs & Debugging ─────────────────────────────────────────
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# ── Testing & Code Quality ───────────────────────────────────
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+.tox/
+
+# ── Packaging & Distribution ─────────────────────────────────
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# ── Databases & Vector Stores ─────────────────────────────────
+*.db
+*.sqlite
+*.sqlite3
+data/chroma_db/
+chroma_db/
+
+# ── Voice Models & Audio Samples ──────────────────────────────
+# Ignore raw audio recordings and trained model checkpoints
+*.wav
+*.mp3
+*.m4a
+*.flac
+*.ogg
+*.aac
+data/voice_samples/
+data/trained_models/
+data/raw/*
+!data/raw/.gitkeep
+
+# ── Project Specific Runtime Data ────────────────────────────
+# Local conversational memory / state (if dynamically updated)
+# memory.json
+
+# Keep processed persona prompts and resources tracked:
+!data/processed/
+!data/processed/**
