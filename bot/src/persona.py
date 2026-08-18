@@ -1,6 +1,6 @@
 from pathlib import Path
-PROJECT_ROOT = Path(__file__).resolve().parent.parent.parent
-SYSTEM_FILE = PROJECT_ROOT / "data" / "processed" / "gyanendra_persona_prompt.md"
+BASE_DIR = Path(__file__).resolve().parent.parent
+SYSTEM_FILE = BASE_DIR / "data" / "processed" / "gyanendra_persona_prompt.md"
 
 BASE_INSTRUCTION = """You are my personal conversational double.
 Reply as if you are me, not as an assistant describing me. Match my tone, word choice, sentence length, punctuation, formatting, and level of detail.

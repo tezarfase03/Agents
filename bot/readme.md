@@ -21,24 +21,21 @@ Built with **LangChain**, **OpenAI**, and **Microsoft Edge TTS** for natural con
 ```text
 personal-voice-chatbot/
 ├── bot/
-│   ├── __init__.py
-│   └── src/
-│       ├── __init__.py
-│       ├── chatbot.py           # PersonaChatbot class & memory management
-│       ├── config.py            # LLM initialization & environment configuration
-│       ├── main.py              # Interactive CLI application
-│       ├── persona.py           # Persona prompt loader & system instructions
-│       └── voice.py             # Edge TTS synthesizer & audio playback
-├── data/
-│   ├── processed/
-│   │   └── gyanendra_persona_prompt.md  # Core persona style & cognitive guide
-│   └── raw/
-│       └── .gitkeep             # Directory for raw voice samples or training data
-├── .env.example                 # Template for environment configuration
-├── .gitignore                   # Git ignore rules for secrets, caches, and media
-├── memory.json                  # Persona structure definition & reference data
-├── README.md                    # Project documentation
-└── requirements.txt             # Python dependencies
+│   ├── data/
+│   │   ├── processed/
+│   │   │   └── gyanendra_persona_prompt.md  # Core persona style & cognitive guide
+│   │   └── raw/
+│   ├── src/
+│   │   ├── __init__.py
+│   │   ├── chatbot.py           # PersonaChatbot class & memory management
+│   │   ├── config.py            # LLM initialization & environment configuration
+│   │   ├── main.py              # Interactive CLI application
+│   │   ├── persona.py           # Persona prompt loader & system instructions
+│   │   └── voice.py             # Edge TTS synthesizer & audio playback
+│   ├── .env.example                 # Template for environment configuration
+│   ├── .gitignore                   # Git ignore rules for secrets, caches, and media
+│   ├── readme.md                    # Project documentation
+│   └── requirements.txt             # Python dependencies
 ```
 
 ---
@@ -77,12 +74,13 @@ source .venv/bin/activate
 ### 3. Install Dependencies
 
 ```bash
+cd bot
 pip install -r requirements.txt
 ```
 
 ### 4. Configure Environment Variables
 
-Copy `.env.example` to create your local `.env` file:
+While inside the `bot` directory, copy `.env.example` to create your local `.env` file:
 
 **Windows (PowerShell):**
 ```powershell
@@ -94,7 +92,7 @@ Copy-Item .env.example .env
 cp .env.example .env
 ```
 
-Open `.env` in your editor and add your OpenAI API key:
+Open `bot/.env` in your editor and add your OpenAI API key:
 
 ```env
 OPENAI_API_KEY=sk-your-actual-api-key-here
@@ -106,12 +104,13 @@ OPENAI_BASE_URL=https://api.openai.com/v1
 
 ## 💻 Running the Chatbot
 
-Start the interactive CLI chatbot:
+Start the interactive CLI chatbot from inside the `bot` directory:
 
 ```bash
-python bot/src/main.py
+cd bot
+python src/main.py
 ```
-*(or `python -m bot.src.main`)*
+*(or `python -m src.main`)*
 
 ### Interactive Commands
 
@@ -168,9 +167,9 @@ Ensure you copied `.env.example` to `.env` and set `OPENAI_API_KEY` with a valid
 <details>
 <summary><b>3. ModuleNotFoundError when running scripts</b></summary>
 
-Always run from the project root directory using:
+Always run from the `bot` directory using:
 ```bash
-python bot/src/main.py
+python src/main.py
 ```
 </details>
 
